@@ -571,7 +571,83 @@
       color: var(--muted);
     }
 
-    /* ANIMATIONS */
+    /* MARQUEE */
+    .marquee-wrap {
+      overflow: hidden;
+      padding: 18px 0;
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .marquee-track {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      white-space: nowrap;
+      animation: marquee 28s linear infinite;
+      width: max-content;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .marquee-wrap:hover .marquee-track { animation-play-state: paused; }
+    .marquee-track span { transition: color 0.2s; }
+    .marquee-track span:not(.sep):hover { color: var(--gold); }
+    .sep { color: var(--gold); font-size: 8px; opacity: 0.5; }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* LIVE DOT */
+    .live-dot {
+      display: inline-block;
+      width: 7px; height: 7px;
+      background: #4ade80;
+      border-radius: 50%;
+      margin-right: 8px;
+      position: relative;
+      top: -1px;
+      animation: pulse-green 2s ease-in-out infinite;
+    }
+    @keyframes pulse-green {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(74,222,128,0.4); }
+      50% { box-shadow: 0 0 0 6px rgba(74,222,128,0); }
+    }
+
+    /* SKILL BARS */
+    .skill-bar-wrap {
+      margin-bottom: 18px;
+    }
+    .skill-bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--cream);
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+    .skill-bar-pct { color: var(--gold); font-size: 10px; }
+    .skill-bar-track {
+      width: 100%;
+      height: 2px;
+      background: rgba(201,168,76,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    .skill-bar-fill {
+      position: absolute;
+      left: 0; top: 0; height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      width: 0%;
+      transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
+    }
+    .skill-group.visible .skill-bar-fill { width: var(--w); }
+
+    /* CARD SPOTLIGHT */
+    .project-card { isolation: isolate; }
+
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(24px); }
       to { opacity: 1; transform: translateY(0); }
@@ -632,35 +708,72 @@
 
   <!-- HERO -->
   <section class="hero" id="home">
-    <div class="hero-eyebrow">Available for Internships & Opportunities</div>
-    <h1 class="hero-name">Devin<br /><span>Thenuwara</span></h1>
+    <canvas id="heroCanvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
+    <canvas id="heroCanvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
+    <div style="position:relative;z-index:1;">
+    <div class="hero-eyebrow"><span class="live-dot"></span>Available for Internships & Opportunities</div>
+    <h1 class="hero-name" id="heroName">Devin<br /><span id="heroNameSpan">Thenuwara</span></h1>
     <p class="hero-tagline">Building full-stack products that bridge empathy and engineering — from crime-safe navigation to food rescue platforms.</p>
     <div class="hero-cta">
-      <a href="#experience" class="btn-primary">View My Work ↓</a>
-      <a href="mailto:devinethenuwara@gmail.com" class="btn-ghost">Get In Touch</a>
+      <a href="#experience" class="btn-primary magnetic">View My Work ↓</a>
+      <a href="/cdn-cgi/l/email-protection#fe9a9b8897909b8a969b908b899f8c9fbe99939f9792d09d9193" class="btn-ghost magnetic">Get In Touch</a>
     </div>
     <div class="hero-scroll-hint">
       <div class="scroll-line"></div>
       <span>Scroll to explore</span>
     </div>
+    </div>
   </section>
 
   <div class="divider"></div>
 
-  <!-- ABOUT -->
+  <!-- MARQUEE TICKER -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span>React</span><span class="sep">✦</span>
+      <span>Next.js</span><span class="sep">✦</span>
+      <span>TypeScript</span><span class="sep">✦</span>
+      <span>Python</span><span class="sep">✦</span>
+      <span>Firebase</span><span class="sep">✦</span>
+      <span>Supabase</span><span class="sep">✦</span>
+      <span>Node.js</span><span class="sep">✦</span>
+      <span>GraphHopper</span><span class="sep">✦</span>
+      <span>Tailwind CSS</span><span class="sep">✦</span>
+      <span>SQL</span><span class="sep">✦</span>
+      <span>Flutter</span><span class="sep">✦</span>
+      <span>OpenAI API</span><span class="sep">✦</span>
+      <span>Google Maps API</span><span class="sep">✦</span>
+      <!-- duplicate for seamless loop -->
+      <span>React</span><span class="sep">✦</span>
+      <span>Next.js</span><span class="sep">✦</span>
+      <span>TypeScript</span><span class="sep">✦</span>
+      <span>Python</span><span class="sep">✦</span>
+      <span>Firebase</span><span class="sep">✦</span>
+      <span>Supabase</span><span class="sep">✦</span>
+      <span>Node.js</span><span class="sep">✦</span>
+      <span>GraphHopper</span><span class="sep">✦</span>
+      <span>Tailwind CSS</span><span class="sep">✦</span>
+      <span>SQL</span><span class="sep">✦</span>
+      <span>Flutter</span><span class="sep">✦</span>
+      <span>OpenAI API</span><span class="sep">✦</span>
+      <span>Google Maps API</span><span class="sep">✦</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
   <section id="about">
     <div class="section-label">01 — About</div>
     <div class="section-title">Engineer.<br />Builder. Connector.</div>
     <div class="about-grid">
       <div class="about-text reveal">
-        <p>I'm a sophomore studying Informatics at UT Austin with a 4.0 GPA, passionate about building software that actually matters to people. Whether it's helping residents navigate safely, rescuing surplus food for shelters, or tracking event ROI for CPG brands — I care about the <em>why</em> behind the code.</p>
+        <p>I'm a sophomore studying Informatics at UT Austin, passionate about building software that actually matters to people. Whether it's helping residents navigate safely, rescuing surplus food for shelters, or tracking event ROI for CPG brands — I care about the <em>why</em> behind the code.</p>
         <p>I've shipped real products with City of Austin teams, secured an "Overall Best App" award pitching to Capital Factory investors, and I'm currently building REFIND, a B2B event intelligence platform at Texas Convergent.</p>
         <p>Outside of code, I co-founded the Sri Lankan Student Association at UT, lead the software subteam for Longhorn Baja, and spent 5+ years teaching at the Austin Buddhist Vihara — logging 200+ volunteer hours.</p>
       </div>
       <div class="about-stats reveal">
         <div class="stat-card">
-          <div class="stat-number">4.0</div>
-          <div class="stat-label">GPA at UT Austin</div>
+          <div class="stat-number">MVP</div>
+          <div class="stat-label">Best App — Capital Factory</div>
         </div>
         <div class="stat-card">
           <div class="stat-number">3×</div>
@@ -738,7 +851,7 @@
   <!-- PROJECTS -->
   <section id="projects">
     <div class="section-label">03 — Projects</div>
-    <div class="section-title">Things I've<br />Built</div>
+    <div class="section-title">Projects I've<br />Built</div>
     <div class="projects-grid">
 
       <div class="project-card reveal">
@@ -805,26 +918,26 @@
     <div class="skills-grid">
       <div class="skill-group reveal">
         <div class="skill-group-title">Frontend</div>
-        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">React / Next.js</span></div>
-        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">TypeScript / JavaScript</span></div>
-        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">HTML / CSS / Tailwind</span></div>
-        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">Flutter</span></div>
+        <div class="skill-bar-wrap"><div class="skill-bar-label"><span>React / Next.js</span><span class="skill-bar-pct">95%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="--w:95%"></div></div></div>
+        <div class="skill-bar-wrap"><div class="skill-bar-label"><span>TypeScript / JavaScript</span><span class="skill-bar-pct">90%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="--w:90%"></div></div></div>
+        <div class="skill-bar-wrap"><div class="skill-bar-label"><span>HTML / CSS / Tailwind</span><span class="skill-bar-pct">95%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="--w:95%"></div></div></div>
+        <div class="skill-bar-wrap"><div class="skill-bar-label"><span>Flutter</span><span class="skill-bar-pct">70%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="--w:70%"></div></div></div>
       </div>
       <div class="skill-group reveal">
         <div class="skill-group-title">Backend & Data</div>
-        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">Python</span></div>
-        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">SQL</span></div>
-        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">Firebase / Supabase</span></div>
-        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">Node.js</span></div>
-        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">REST APIs</span></div>
+        <div class="skill-bar-wrap"><div class="skill-bar-label"><span>Python</span><span class="skill-bar-pct">88%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="--w:88%"></div></div></div>
+        <div class="skill-bar-wrap"><div class="skill-bar-label"><span>SQL</span><span class="skill-bar-pct">82%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="--w:82%"></div></div></div>
+        <div class="skill-bar-wrap"><div class="skill-bar-label"><span>Firebase / Supabase</span><span class="skill-bar-pct">85%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="--w:85%"></div></div></div>
+        <div class="skill-bar-wrap"><div class="skill-bar-label"><span>Node.js</span><span class="skill-bar-pct">80%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="--w:80%"></div></div></div>
+        <div class="skill-bar-wrap"><div class="skill-bar-label"><span>REST APIs</span><span class="skill-bar-pct">92%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="--w:92%"></div></div></div>
       </div>
       <div class="skill-group reveal">
         <div class="skill-group-title">Product & APIs</div>
-        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">MVP Development</span></div>
-        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">User-Centered Design</span></div>
-        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">Rapid Prototyping</span></div>
-        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">Google Maps / OpenAI APIs</span></div>
-        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">A/B Testing</span></div>
+        <div class="skill-bar-wrap"><div class="skill-bar-label"><span>MVP Development</span><span class="skill-bar-pct">90%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="--w:90%"></div></div></div>
+        <div class="skill-bar-wrap"><div class="skill-bar-label"><span>User-Centered Design</span><span class="skill-bar-pct">85%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="--w:85%"></div></div></div>
+        <div class="skill-bar-wrap"><div class="skill-bar-label"><span>Rapid Prototyping</span><span class="skill-bar-pct">88%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="--w:88%"></div></div></div>
+        <div class="skill-bar-wrap"><div class="skill-bar-label"><span>Google Maps / OpenAI APIs</span><span class="skill-bar-pct">85%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="--w:85%"></div></div></div>
+        <div class="skill-bar-wrap"><div class="skill-bar-label"><span>A/B Testing</span><span class="skill-bar-pct">75%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="--w:75%"></div></div></div>
       </div>
     </div>
   </section>
@@ -867,9 +980,9 @@
     <div class="section-label">06 — Contact</div>
     <div class="contact-big reveal">Let's Build<br />Something.</div>
     <div class="contact-links reveal">
-      <a href="mailto:devinethenuwara@gmail.com" class="contact-link">
+      <a href="/cdn-cgi/l/email-protection#9bfffeedf2f5feeff3fef5eeecfae9fadbfcf6faf2f7b5f8f4f6" class="contact-link">
         <span class="contact-link-label">Email</span>
-        <span class="contact-link-value">devinethenuwara@gmail.com</span>
+        <span class="contact-link-value"><span class="__cf_email__" data-cfemail="abcfceddc2c5cedfc3cec5dedccad9caebccc6cac2c785c8c4c6">[email&#160;protected]</span></span>
       </a>
       <a href="tel:5126954996" class="contact-link">
         <span class="contact-link-label">Phone</span>
@@ -891,8 +1004,8 @@
     <div class="footer-right">Informatics @ UT Austin — Class of 2028</div>
   </footer>
 
-  <script>
-    // Custom cursor
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    // ── Custom cursor ──────────────────────────────────
     const cursor = document.getElementById('cursor');
     const ring = document.getElementById('cursorRing');
     let mx = 0, my = 0, rx = 0, ry = 0;
@@ -909,21 +1022,143 @@
       el.addEventListener('mouseleave', () => { ring.style.width = '36px'; ring.style.height = '36px'; ring.style.borderColor = 'rgba(201,168,76,0.5)'; });
     });
 
-    // Scroll nav
+    // ── Scroll nav ────────────────────────────────────
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 60); });
 
-    // Reveal on scroll
+    // ── Reveal on scroll ──────────────────────────────
     const reveals = document.querySelectorAll('.reveal');
     const obs = new IntersectionObserver(entries => {
-      entries.forEach((e, i) => {
-        if (e.isIntersecting) {
-          setTimeout(() => e.target.classList.add('visible'), i * 80);
-          obs.unobserve(e.target);
-        }
-      });
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
     }, { threshold: 0.12 });
     reveals.forEach(el => obs.observe(el));
+
+    // ── Hero Particle Canvas ──────────────────────────
+    const canvas = document.getElementById('heroCanvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, particles = [];
+    function resizeCanvas() {
+      W = canvas.width = canvas.offsetWidth;
+      H = canvas.height = canvas.offsetHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    class Particle {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * W;
+        this.y = Math.random() * H;
+        this.r = Math.random() * 1.5 + 0.3;
+        this.alpha = Math.random() * 0.5 + 0.1;
+        this.vx = (Math.random() - 0.5) * 0.3;
+        this.vy = (Math.random() - 0.5) * 0.3;
+        this.life = Math.random() * 200 + 100;
+        this.age = 0;
+      }
+      draw() {
+        const t = this.age / this.life;
+        const a = this.alpha * Math.sin(Math.PI * t);
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(201,168,76,${a})`;
+        ctx.fill();
+      }
+      update() {
+        this.x += this.vx; this.y += this.vy; this.age++;
+        if (this.age > this.life) this.reset();
+      }
+    }
+
+    for (let i = 0; i < 120; i++) {
+      const p = new Particle();
+      p.age = Math.floor(Math.random() * p.life); // stagger
+      particles.push(p);
+    }
+
+    // Connection lines
+    function drawConnections() {
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(201,168,76,${0.04 * (1 - dist / 100)})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function animParticles() {
+      ctx.clearRect(0, 0, W, H);
+      drawConnections();
+      particles.forEach(p => { p.update(); p.draw(); });
+      requestAnimationFrame(animParticles);
+    }
+    animParticles();
+
+    // ── Mouse Parallax on Hero Name ───────────────────
+    const heroName = document.getElementById('heroName');
+    document.addEventListener('mousemove', e => {
+      const ox = (e.clientX / window.innerWidth - 0.5) * 14;
+      const oy = (e.clientY / window.innerHeight - 0.5) * 8;
+      heroName.style.transform = `translate(${ox}px, ${oy}px)`;
+    });
+
+    // ── Text Scramble on Hero Name ────────────────────
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%';
+    function scramble(el, finalText, duration = 900) {
+      let start = null;
+      const totalFrames = duration / 16;
+      function frame(ts) {
+        if (!start) start = ts;
+        const progress = Math.min((ts - start) / duration, 1);
+        const revealed = Math.floor(progress * finalText.length);
+        let out = '';
+        for (let i = 0; i < finalText.length; i++) {
+          if (finalText[i] === ' ') { out += ' '; continue; }
+          if (i < revealed) { out += finalText[i]; }
+          else { out += chars[Math.floor(Math.random() * chars.length)]; }
+        }
+        el.textContent = out;
+        if (progress < 1) requestAnimationFrame(frame);
+        else el.textContent = finalText;
+      }
+      requestAnimationFrame(frame);
+    }
+    setTimeout(() => scramble(document.getElementById('heroNameSpan'), 'Thenuwara', 1100), 500);
+
+    // ── Magnetic Buttons ──────────────────────────────
+    document.querySelectorAll('.magnetic').forEach(btn => {
+      btn.addEventListener('mousemove', e => {
+        const r = btn.getBoundingClientRect();
+        const ox = (e.clientX - r.left - r.width / 2) * 0.28;
+        const oy = (e.clientY - r.top - r.height / 2) * 0.28;
+        btn.style.transform = `translate(${ox}px, ${oy}px)`;
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transform = '';
+      });
+    });
+
+    // ── Project Card Mouse Spotlight ──────────────────
+    document.querySelectorAll('.project-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const x = e.clientX - r.left;
+        const y = e.clientY - r.top;
+        card.style.background = `radial-gradient(280px circle at ${x}px ${y}px, rgba(201,168,76,0.07), var(--bg2) 70%)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.background = '';
+      });
+    });
   </script>
 </body>
 </html>
