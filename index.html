@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Devin Thenuwara — Software Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #07080d;
+      --bg2: #0d0f18;
+      --gold: #c9a84c;
+      --gold-light: #e8c97a;
+      --cream: #f0ead8;
+      --muted: #6b6d7a;
+      --border: rgba(201,168,76,0.18);
+      --white: #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--cream);
+      font-family: 'DM Mono', monospace;
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom cursor */
+    .cursor {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background: var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.15s ease, opacity 0.2s;
+      transform: translate(-50%, -50%);
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(201,168,76,0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transition: transform 0.4s ease, width 0.3s, height 0.3s;
+      transform: translate(-50%, -50%);
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 60px;
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    nav.scrolled {
+      background: rgba(7,8,13,0.9);
+      border-color: var(--border);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: var(--gold-light);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; right: -200px;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -100px; left: 30%;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(100,130,255,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.2s forwards;
+    }
+    .hero-name {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(64px, 9vw, 130px);
+      font-weight: 800;
+      line-height: 0.9;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.4s forwards;
+    }
+    .hero-name span {
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(201,168,76,0.6);
+    }
+    .hero-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(20px, 2.5vw, 32px);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--muted);
+      margin-top: 28px;
+      max-width: 580px;
+      line-height: 1.5;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.6s forwards;
+    }
+    .hero-cta {
+      display: flex;
+      gap: 20px;
+      margin-top: 52px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.8s forwards;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      background: var(--gold);
+      color: var(--bg);
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      background: transparent;
+      color: var(--cream);
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      cursor: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 60px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0;
+      animation: fadeUp 0.8s ease 1.2s forwards;
+    }
+    .scroll-line {
+      width: 40px;
+      height: 1px;
+      background: var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: var(--gold);
+      animation: slideRight 2s ease infinite;
+    }
+
+    /* SECTION COMMON */
+    section { padding: 120px 60px; }
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 700;
+      line-height: 1.05;
+      color: var(--white);
+      margin-bottom: 64px;
+    }
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ABOUT */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .about-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--cream);
+    }
+    .about-text p + p { margin-top: 20px; }
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+    .stat-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 32px;
+      transition: border-color 0.3s;
+    }
+    .stat-card:hover { border-color: var(--gold); }
+    .stat-number {
+      font-family: 'Syne', sans-serif;
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    /* EXPERIENCE */
+    .exp-list { display: flex; flex-direction: column; }
+    .exp-item {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 60px;
+      padding: 48px 0;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s;
+      position: relative;
+    }
+    .exp-item::before {
+      content: '';
+      position: absolute;
+      left: -60px; top: 0;
+      width: 2px; height: 0;
+      background: var(--gold);
+      transition: height 0.4s ease;
+    }
+    .exp-item:hover::before { height: 100%; }
+    .exp-meta { }
+    .exp-company {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.05em;
+    }
+    .exp-period {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 6px;
+      letter-spacing: 0.08em;
+    }
+    .exp-role {
+      font-family: 'Syne', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+    .exp-desc {
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+    .exp-desc li { margin-bottom: 10px; list-style: none; padding-left: 16px; position: relative; }
+    .exp-desc li::before { content: '→'; position: absolute; left: 0; color: var(--gold); font-size: 11px; }
+    .exp-badge {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 5px 12px;
+      border: 1px solid rgba(201,168,76,0.4);
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* PROJECTS */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+    .project-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 48px;
+      transition: border-color 0.3s, transform 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 2px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+    .project-card:hover::before { transform: scaleX(1); }
+    .project-card:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-4px); }
+    .project-number {
+      font-family: 'Syne', sans-serif;
+      font-size: 72px;
+      font-weight: 800;
+      color: rgba(201,168,76,0.08);
+      line-height: 1;
+      margin-bottom: -20px;
+    }
+    .project-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+    .project-org {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+    .project-desc {
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 28px;
+    }
+    .tag {
+      padding: 4px 12px;
+      background: rgba(201,168,76,0.08);
+      border: 1px solid var(--border);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* SKILLS */
+    .skills-section { background: var(--bg2); }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+    .skill-group {
+      padding: 48px;
+      border: 1px solid var(--border);
+    }
+    .skill-group-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 28px;
+    }
+    .skill-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .skill-dot {
+      width: 6px; height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .skill-name {
+      font-size: 13px;
+      color: var(--cream);
+      letter-spacing: 0.04em;
+    }
+
+    /* LEADERSHIP */
+    .leadership-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+    .lead-card {
+      border: 1px solid var(--border);
+      padding: 40px;
+      transition: border-color 0.3s;
+    }
+    .lead-card:hover { border-color: var(--gold); }
+    .lead-icon {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+    .lead-org {
+      font-family: 'Syne', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+    .lead-role {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .lead-desc {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+    .lead-period {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 16px;
+      letter-spacing: 0.1em;
+    }
+
+    /* CONTACT */
+    .contact-section {
+      text-align: center;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-section::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+    }
+    .contact-big {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(48px, 8vw, 110px);
+      font-weight: 800;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(201,168,76,0.3);
+      line-height: 1;
+      margin-bottom: 48px;
+    }
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .contact-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+    .contact-link:hover { color: var(--gold); }
+    .contact-link-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+    .contact-link-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 300;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 32px 60px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-copy {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+    .footer-right {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px;
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideRight {
+      from { left: -100%; }
+      to { left: 100%; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* NOISE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9997;
+      opacity: 0.4;
+    }
+
+    @media (max-width: 900px) {
+      nav { padding: 20px 24px; }
+      section { padding: 80px 24px; }
+      .hero { padding: 0 24px; }
+      .about-grid, .projects-grid, .skills-grid, .leadership-grid { grid-template-columns: 1fr; }
+      .exp-item { grid-template-columns: 1fr; gap: 16px; }
+      .nav-links { display: none; }
+      footer { padding: 24px; flex-direction: column; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#" class="nav-logo">D. Thenuwara</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-eyebrow">Available for Internships & Opportunities</div>
+    <h1 class="hero-name">Devin<br /><span>Thenuwara</span></h1>
+    <p class="hero-tagline">Building full-stack products that bridge empathy and engineering — from crime-safe navigation to food rescue platforms.</p>
+    <div class="hero-cta">
+      <a href="#experience" class="btn-primary">View My Work ↓</a>
+      <a href="mailto:devinethenuwara@gmail.com" class="btn-ghost">Get In Touch</a>
+    </div>
+    <div class="hero-scroll-hint">
+      <div class="scroll-line"></div>
+      <span>Scroll to explore</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-label">01 — About</div>
+    <div class="section-title">Engineer.<br />Builder. Connector.</div>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>I'm a sophomore studying Informatics at UT Austin with a 4.0 GPA, passionate about building software that actually matters to people. Whether it's helping residents navigate safely, rescuing surplus food for shelters, or tracking event ROI for CPG brands — I care about the <em>why</em> behind the code.</p>
+        <p>I've shipped real products with City of Austin teams, secured an "Overall Best App" award pitching to Capital Factory investors, and I'm currently building REFIND, a B2B event intelligence platform at Texas Convergent.</p>
+        <p>Outside of code, I co-founded the Sri Lankan Student Association at UT, lead the software subteam for Longhorn Baja, and spent 5+ years teaching at the Austin Buddhist Vihara — logging 200+ volunteer hours.</p>
+      </div>
+      <div class="about-stats reveal">
+        <div class="stat-card">
+          <div class="stat-number">4.0</div>
+          <div class="stat-label">GPA at UT Austin</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">3×</div>
+          <div class="stat-label">Software Engineer Intern</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">200+</div>
+          <div class="stat-label">Volunteer Hours</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">131</div>
+          <div class="stat-label">Lives Saved via Blood Drive</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-label">02 — Experience</div>
+    <div class="section-title">Where I've<br />Made an Impact</div>
+    <div class="exp-list">
+
+      <div class="exp-item reveal">
+        <div class="exp-meta">
+          <div class="exp-company">City of Austin CTM</div>
+          <div class="exp-period">Jun 2025 – Jul 2025</div>
+        </div>
+        <div>
+          <div class="exp-role">Software Engineer Intern</div>
+          <ul class="exp-desc">
+            <li>Built a full-stack public safety platform processing 500+ live crime reports daily to calculate risk-averse navigation paths.</li>
+            <li>Architected real-time Firebase sync layer for instant safety alerts during navigation.</li>
+            <li>Implemented custom routing via GraphHopper & Google Maps APIs, simulating 200+ safe routes weighted against crime density.</li>
+          </ul>
+          <div class="exp-badge">🏆 Overall Best App — Capital Factory Pitch</div>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-meta">
+          <div class="exp-company">City of Austin TyRex Group</div>
+          <div class="exp-period">Jun 2024 – Jul 2024</div>
+        </div>
+        <div>
+          <div class="exp-role">Design & Prototyping Intern</div>
+          <ul class="exp-desc">
+            <li>Deployed a rapid prototyping campaign using Onshape and Blender to bridge conceptual design and physical manufacturing.</li>
+            <li>Leveraged Generative AI (CosmicGPT) for market analysis, producing 20+ new product concepts that moved to prototype phase.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-meta">
+          <div class="exp-company">City of Austin CTM</div>
+          <div class="exp-period">Jun 2023 – Jul 2023</div>
+        </div>
+        <div>
+          <div class="exp-role">Software Engineer Intern</div>
+          <ul class="exp-desc">
+            <li>Co-developed a full-stack food rescue platform connecting local restaurants with shelters for underserved communities in Austin.</li>
+            <li>Automated data ingestion pipelines in Python to parse public restaurant APIs and aggregate data into a centralized SQL database.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section-label">03 — Projects</div>
+    <div class="section-title">Things I've<br />Built</div>
+    <div class="projects-grid">
+
+      <div class="project-card reveal">
+        <div class="project-number">01</div>
+        <div class="project-title">REFIND</div>
+        <div class="project-org">Texas Convergent — Feb 2026–Present</div>
+        <p class="project-desc">A B2B event intelligence platform enabling CPG brands to track ROI and attendee sentiment via dynamic QR code campaigns. Features real-time analytics dashboards, multi-tenant backend with Row Level Security, and AI-summarized feedback.</p>
+        <div class="project-tags">
+          <span class="tag">Next.js</span>
+          <span class="tag">Supabase</span>
+          <span class="tag">Node.js</span>
+          <span class="tag">Tailwind CSS</span>
+          <span class="tag">AI</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-number">02</div>
+        <div class="project-title">SafeRoute Austin</div>
+        <div class="project-org">City of Austin CTM — Summer 2025</div>
+        <p class="project-desc">A public safety navigation platform processing 500+ daily crime reports to route residents away from high-risk areas. Real-time Firebase sync, custom routing algorithms, and a polished MVP that won "Overall Best App" at a Capital Factory pitch.</p>
+        <div class="project-tags">
+          <span class="tag">Firebase</span>
+          <span class="tag">GraphHopper</span>
+          <span class="tag">Google Maps API</span>
+          <span class="tag">React</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-number">03</div>
+        <div class="project-title">Food Rescue Platform</div>
+        <div class="project-org">City of Austin CTM — Summer 2023</div>
+        <p class="project-desc">A full-stack platform connecting Austin restaurants with local shelters to streamline food donations. Automated Python data pipelines parsed public restaurant APIs and aggregated menu/location data into a centralized SQL database.</p>
+        <div class="project-tags">
+          <span class="tag">Python</span>
+          <span class="tag">SQL</span>
+          <span class="tag">REST APIs</span>
+          <span class="tag">Full-Stack</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-number">04</div>
+        <div class="project-title">Longhorn Baja Dashboard</div>
+        <div class="project-org">Longhorn Baja — Aug 2025–Present</div>
+        <p class="project-desc">Led the software subteam building live sensor data visualization and vehicle telemetry simulations. Also built and maintain the Longhorn Baja website — a centralized platform for team updates, recruitment, and sponsor visibility.</p>
+        <div class="project-tags">
+          <span class="tag">Data Viz</span>
+          <span class="tag">Telemetry</span>
+          <span class="tag">Web Dev</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SKILLS -->
+  <section id="skills" class="skills-section">
+    <div class="section-label">04 — Skills</div>
+    <div class="section-title">My Toolkit</div>
+    <div class="skills-grid">
+      <div class="skill-group reveal">
+        <div class="skill-group-title">Frontend</div>
+        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">React / Next.js</span></div>
+        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">TypeScript / JavaScript</span></div>
+        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">HTML / CSS / Tailwind</span></div>
+        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">Flutter</span></div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-title">Backend & Data</div>
+        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">Python</span></div>
+        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">SQL</span></div>
+        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">Firebase / Supabase</span></div>
+        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">Node.js</span></div>
+        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">REST APIs</span></div>
+      </div>
+      <div class="skill-group reveal">
+        <div class="skill-group-title">Product & APIs</div>
+        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">MVP Development</span></div>
+        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">User-Centered Design</span></div>
+        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">Rapid Prototyping</span></div>
+        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">Google Maps / OpenAI APIs</span></div>
+        <div class="skill-item"><div class="skill-dot"></div><span class="skill-name">A/B Testing</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- LEADERSHIP -->
+  <section id="leadership">
+    <div class="section-label">05 — Leadership & Community</div>
+    <div class="section-title">Beyond<br />the Code</div>
+    <div class="leadership-grid">
+      <div class="lead-card reveal">
+        <div class="lead-icon">🇱🇰</div>
+        <div class="lead-org">Sri Lankan Student Association</div>
+        <div class="lead-role">Co-Founder & Coordinator</div>
+        <p class="lead-desc">Founded an organization dedicated to connecting UT Austin students with Sri Lankan culture. Led outreach, branding, and event strategy — growing to 20+ active members in the first semester.</p>
+        <div class="lead-period">Aug 2025 – Present</div>
+      </div>
+      <div class="lead-card reveal">
+        <div class="lead-icon">🏎️</div>
+        <div class="lead-org">Longhorn Baja SAE</div>
+        <div class="lead-role">Software Lead</div>
+        <p class="lead-desc">Lead the software subteam responsible for live sensor data visualization and vehicle telemetry. Built and maintain the team's public website for recruitment and sponsorship.</p>
+        <div class="lead-period">Aug 2025 – Present</div>
+      </div>
+      <div class="lead-card reveal">
+        <div class="lead-icon">🪷</div>
+        <div class="lead-org">Austin Buddhist Vihara</div>
+        <div class="lead-role">Lead Teacher & Volunteer</div>
+        <p class="lead-desc">Over 200 hours of community service: organized a blood drive saving 131 lives, donated to homeless outreach, and supported the Vihara's mission of community enrichment for over 5 years.</p>
+        <div class="lead-period">Jun 2020 – Aug 2025</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact-section">
+    <div class="section-label">06 — Contact</div>
+    <div class="contact-big reveal">Let's Build<br />Something.</div>
+    <div class="contact-links reveal">
+      <a href="mailto:devinethenuwara@gmail.com" class="contact-link">
+        <span class="contact-link-label">Email</span>
+        <span class="contact-link-value">devinethenuwara@gmail.com</span>
+      </a>
+      <a href="tel:5126954996" class="contact-link">
+        <span class="contact-link-label">Phone</span>
+        <span class="contact-link-value">512-695-4996</span>
+      </a>
+      <a href="https://linkedin.com/in/devint7" target="_blank" class="contact-link">
+        <span class="contact-link-label">LinkedIn</span>
+        <span class="contact-link-value">linkedin.com/in/devint7</span>
+      </a>
+      <a href="https://github.com/DevinT7" target="_blank" class="contact-link">
+        <span class="contact-link-label">GitHub</span>
+        <span class="contact-link-value">github.com/DevinT7</span>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-copy">© 2026 Devin Thenuwara</div>
+    <div class="footer-right">Informatics @ UT Austin — Class of 2028</div>
+  </footer>
+
+  <script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    function animCursor() {
+      cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+      rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      requestAnimationFrame(animCursor);
+    }
+    animCursor();
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => { ring.style.width = '56px'; ring.style.height = '56px'; ring.style.borderColor = 'rgba(201,168,76,0.8)'; });
+      el.addEventListener('mouseleave', () => { ring.style.width = '36px'; ring.style.height = '36px'; ring.style.borderColor = 'rgba(201,168,76,0.5)'; });
+    });
+
+    // Scroll nav
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 60); });
+
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>
