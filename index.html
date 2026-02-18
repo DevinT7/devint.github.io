@@ -637,7 +637,7 @@
     <p class="hero-tagline">Building full-stack products that bridge empathy and engineering — from crime-safe navigation to food rescue platforms.</p>
     <div class="hero-cta">
       <a href="#experience" class="btn-primary">View My Work ↓</a>
-      <a href="/cdn-cgi/l/email-protection#3b5f5e4d52555e4f535e554e4c5a495a7b5c565a525715585456" class="btn-ghost">Get In Touch</a>
+      <a href="mailto:devinethenuwara@gmail.com" class="btn-ghost">Get In Touch</a>
     </div>
     <div class="hero-scroll-hint">
       <div class="scroll-line"></div>
@@ -659,8 +659,8 @@
       </div>
       <div class="about-stats reveal">
         <div class="stat-card">
-          <div class="stat-number">🏆</div>
-          <div class="stat-label">Best App — Capital Factory Pitch</div>
+          <div class="stat-number">4.0</div>
+          <div class="stat-label">GPA at UT Austin</div>
         </div>
         <div class="stat-card">
           <div class="stat-number">3×</div>
@@ -867,9 +867,9 @@
     <div class="section-label">06 — Contact</div>
     <div class="contact-big reveal">Let's Build<br />Something.</div>
     <div class="contact-links reveal">
-      <a href="/cdn-cgi/l/email-protection#066263706f6863726e6368737167746746616b676f6a2865696b" class="contact-link">
+      <a href="mailto:devinethenuwara@gmail.com" class="contact-link">
         <span class="contact-link-label">Email</span>
-        <span class="contact-link-value"><span class="__cf_email__" data-cfemail="533736253a3d36273b363d262432213213343e323a3f7d303c3e">[email&#160;protected]</span></span>
+        <span class="contact-link-value">devinethenuwara@gmail.com</span>
       </a>
       <a href="tel:5126954996" class="contact-link">
         <span class="contact-link-label">Phone</span>
@@ -891,7 +891,7 @@
     <div class="footer-right">Informatics @ UT Austin — Class of 2028</div>
   </footer>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script>
     // Custom cursor
     const cursor = document.getElementById('cursor');
     const ring = document.getElementById('cursorRing');
@@ -915,4 +915,15 @@
 
     // Reveal on scroll
     const reveals = document.querySelectorAll('.reveal');
-    const obs = new IntersectionObserver(ent
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>
